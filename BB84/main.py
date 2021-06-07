@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[3]:
-
-
 from helpers import *
 
 print("\nBB84 without Eve\n")
@@ -50,8 +44,6 @@ print(f"Key: {key}\n")
 
 save_circuit_image(circuit, "bb84_circuit")
 
-
-# In[ ]:
 
 
 

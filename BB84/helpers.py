@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[2]:
-
-
 from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit, transpile
 from qiskit.providers.aer import QasmSimulator
 from qiskit.tools.monitor import job_monitor
@@ -67,21 +61,21 @@ def insert_states_in_circuit(circuit, states):
             circuit.h([i])
             
 
-def measureInZ(circuit, i):
+def measure_in_Z(circuit, i):
      circuit.measure([i], [i])
         
-def measureInH(circuit, i):
+def measure_in_H(circuit, i):
     circuit.h([i])
-    measureInZ(circuit, i)
+    measure_in_Z(circuit, i)
 
 def make_measurements(bob_bases, circuit):
     for i in range(len(bob_bases)):
         bob_base = bob_bases[i]
         
         if bob_base == 'Z':
-            measureInZ(circuit, i)
+            measure_in_Z(circuit, i)
         elif bob_base == 'H':
-            measureInH(circuit, i)
+            measure_in_H(circuit, i)
             
 def get_key(counts, shots, threshold, size):
     final_key = ''
@@ -118,9 +112,6 @@ def get_counts(circuit, backend, shots):
     counts = result.get_counts(circuit)
     
     return counts
-
-
-# In[ ]:
 
 
 
