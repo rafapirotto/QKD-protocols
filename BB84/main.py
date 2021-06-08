@@ -4,15 +4,16 @@ print("\nBB84 without Eve\n")
 
 use_simulator = input("Run using simulator?(y/n): ").lower()
 size = int(input("Enter desired length of bits: "))
-threshold = 100
+accuracy = 100
 shots = 1
 backend = QasmSimulator()
 
 if use_simulator == "n":
+    print("Loading IBM account")
     my_provider = IBMQ.load_account()
     backend = my_provider.get_backend('ibmq_16_melbourne')
     shots = int(input("Enter desired number of shots: "))
-    threshold = int(input("Enter desired threshold: "))
+    accuracy = int(input("Enter desired accuracy: "))
 
 print("\n")
 
@@ -35,7 +36,7 @@ counts = get_counts(circuit, backend, shots)
 
 same_bases_positions = get_same_bases_positions(alice_bases, bob_bases)
 
-key = get_key(counts, shots, threshold, same_bases_positions)
+key = get_key(counts, shots, accuracy, same_bases_positions)
 
 print(f"\nAlice bits: {alice_bits}")
 print(f"Alice bases: {alice_bases}")

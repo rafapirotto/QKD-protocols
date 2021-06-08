@@ -102,7 +102,7 @@ def get_same_bases_positions(first_bases, second_bases):
     return positions
 
 
-def get_key(counts, shots, threshold, valid_positions):
+def get_key(counts, shots, accuracy, valid_positions):
     final_key = ''
     value_list = counts.items()
 
@@ -117,10 +117,10 @@ def get_key(counts, shots, threshold, valid_positions):
                 zeros += value
 
         if ones > zeros:
-            if ones * 100 / shots >= threshold:
+            if ones * 100 / shots >= accuracy:
                 final_key += '1'
         elif zeros > ones:
-            if zeros * 100 / shots >= threshold:
+            if zeros * 100 / shots >= accuracy:
                 final_key += '0'
 
     return final_key
