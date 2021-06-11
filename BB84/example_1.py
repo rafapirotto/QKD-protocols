@@ -18,11 +18,11 @@ if use_simulator == "n":
 
 print("\n")
 
-alice_bits = get_random_sequence_of_bits(size)
-alice_bases = get_random_sequence_of_bases(size)
+alice_bits = ['0', '1', '0', '0', '0', '1', '0', '1']
+alice_bases = ['Z', 'Z', 'X', 'Z', 'Z', 'X', 'X', "X"]
 alice_states = get_states(alice_bits, alice_bases)
 
-bob_bases = get_random_sequence_of_bases(size)
+bob_bases = ['Z', 'Z', 'X', 'X', 'X', 'Z', 'X', 'X']
 
 circuit = QuantumCircuit(size, size)
 

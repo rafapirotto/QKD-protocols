@@ -1,7 +1,9 @@
-from qiskit import QuantumCircuit, transpile, IBMQ
+from qiskit import QuantumCircuit, transpile
 from qiskit.providers.aer import QasmSimulator
 from qiskit.tools.monitor import job_monitor
 from qiskit.tools.visualization import circuit_drawer
+from random import randint
+from constants import *
 
 
 def get_random_sequence_of_bits(size):
@@ -24,22 +26,22 @@ def get_random_sequence_of_bits(size):
 
 def get_random_sequence_of_bases(size):
     bit_sequence = get_random_sequence_of_bits(size)
-    bases = ['Z' if bit == '0' else 'X' for bit in bit_sequence]
+    bases = [Z_BASE if bit == BIT_0 else X_BASE for bit in bit_sequence]
 
     return bases
 
 
 def get_state(bit, base):
-    if bit == '0':
-        if base == 'Z':
-            return '|0>'
-        elif base == 'X':
-            return '|+>'
-    if bit == '1':
-        if base == 'Z':
-            return '|1>'
-        elif base == 'X':
-            return '|->'
+    if bit == BIT_0:
+        if base == Z_BASE:
+            return STATE_0
+        elif base == X_BASE:
+            return STATE_PLUS
+    if bit == BIT_1:
+        if base == Z_BASE:
+            return STATE_1
+        elif base == X_BASE:
+            return STATE_MINUS
 
 
 def get_states(bits, bases):
@@ -56,13 +58,13 @@ def insert_states_in_circuit(circuit, states):
     for i in range(len(states)):
         state = states[i]
 
-        if state == '|0>':
+        if state == STATE_0:
             pass
-        elif state == '|1>':
+        elif state == STATE_1:
             circuit.x([i])
-        elif state == '|+>':
+        elif state == STATE_PLUS:
             circuit.h([i])
-        elif state == '|->':
+        elif state == STATE_MINUS:
             circuit.x([i])
             circuit.h([i])
 
@@ -80,9 +82,9 @@ def make_measurements(bases, circuit):
     for i in range(len(bases)):
         base = bases[i]
 
-        if base == 'Z':
+        if base == Z_BASE:
             measure_in_z(circuit, i)
-        elif base == 'X':
+        elif base == X_BASE:
             measure_in_x(circuit, i)
 
 
@@ -95,39 +97,46 @@ def get_same_bases_positions(first_bases, second_bases):
         second_base = second_bases[i]
 
         if first_base == second_base:
-            positions.append(bases_length - 1 - i)
-
-    positions.reverse()
+            positions.append(i)
 
     return positions
 
 
-def get_key(counts, shots, accuracy, valid_positions):
-    final_key = ''
+def get_measurements(counts, shots, accuracy, size):
+    measurements = []
     value_list = counts.items()
 
-    for i in valid_positions:
+    for i in range(size):
         zeros = 0
         ones = 0
 
         for (key, value) in value_list:
-            if key[i] == '1':
+            if key[i] == BIT_1:
                 ones += value
-            elif key[i] == '0':
+            elif key[i] == BIT_0:
                 zeros += value
 
         if ones > zeros:
             if ones * 100 / shots >= accuracy:
-                final_key += '1'
+                measurements.append(BIT_1)
+            else:
+                random_number = str(randint(0, 1))
+                measurements.append(random_number)
         elif zeros > ones:
             if zeros * 100 / shots >= accuracy:
-                final_key += '0'
+                measurements.append(BIT_0)
+            else:
+                random_number = str(randint(0, 1))
+                measurements.append(random_number)
 
-    return final_key
+    measurements.reverse()
+    return measurements
 
 
 def save_circuit_image(circuit, file_name):
-    diagram = circuit_drawer(circuit, output='mpl', style={'backgroundcolor': '#EEEEEE'})
+    diagram = circuit_drawer(
+        circuit, output="mpl", style={"backgroundcolor": "#EEEEEE"}
+    )
     diagram.savefig(f"{file_name}.png", format="png")
 
 
@@ -139,6 +148,15 @@ def get_counts(circuit, backend, shots):
     counts = result.get_counts(circuit)
 
     return counts
+
+
+def discard_different_positions(arr, correct_positions):
+    corrected_array = []
+
+    for i in correct_positions:
+        corrected_array.append(arr[i])
+
+    return corrected_array
 
 
 def privacy_amplification():
