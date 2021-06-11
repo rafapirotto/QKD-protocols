@@ -68,6 +68,8 @@ def insert_states_in_circuit(circuit, states):
             circuit.x([i])
             circuit.h([i])
 
+    circuit.barrier()
+
 
 def measure_in_z(circuit, i):
     circuit.measure([i], [i])
@@ -134,6 +136,7 @@ def get_measurements(counts, shots, accuracy, size):
 
 
 def save_circuit_image(circuit, file_name):
+    print("Saving circuit image")
     diagram = circuit_drawer(
         circuit, output="mpl", style={"backgroundcolor": "#EEEEEE"}
     )
