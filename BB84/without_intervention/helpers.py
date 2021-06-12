@@ -80,7 +80,7 @@ def measure_in_x(circuit, i):
     measure_in_z(circuit, i)
 
 
-def make_measurements(bases, circuit):
+def insert_measurements_according_to_base(bases, circuit):
     for i in range(len(bases)):
         base = bases[i]
 
@@ -90,22 +90,19 @@ def make_measurements(bases, circuit):
             measure_in_x(circuit, i)
 
 
-def get_same_bases_positions(first_bases, second_bases):
-    positions = []
-    bases_length = len(first_bases)
+def get_counts(circuit, backend, shots):
+    compiled_circuit = transpile(circuit, backend)
+    job = backend.run(compiled_circuit, shots=shots)
+    job_monitor(job)
+    result = job.result()
+    counts = result.get_counts(circuit)
 
-    for i in range(bases_length):
-        first_base = first_bases[i]
-        second_base = second_bases[i]
-
-        if first_base == second_base:
-            positions.append(i)
-
-    return positions
+    return counts
 
 
-def get_measurements(counts, shots, accuracy, size):
+def get_measurements_result(backend, circuit, shots, accuracy, size):
     measurements = []
+    counts = get_counts(circuit, backend, shots)
     value_list = counts.items()
 
     for i in range(size):
@@ -135,22 +132,26 @@ def get_measurements(counts, shots, accuracy, size):
     return measurements
 
 
+def get_same_bases_positions(first_bases, second_bases):
+    positions = []
+    bases_length = len(first_bases)
+
+    for i in range(bases_length):
+        first_base = first_bases[i]
+        second_base = second_bases[i]
+
+        if first_base == second_base:
+            positions.append(i)
+
+    return positions
+
+
 def save_circuit_image(circuit, file_name):
     print("Saving circuit image")
     diagram = circuit_drawer(
         circuit, output="mpl", style={"backgroundcolor": "#EEEEEE"}
     )
     diagram.savefig(f"{file_name}.png", format="png")
-
-
-def get_counts(circuit, backend, shots):
-    compiled_circuit = transpile(circuit, backend)
-    job = backend.run(compiled_circuit, shots=shots)
-    job_monitor(job)
-    result = job.result()
-    counts = result.get_counts(circuit)
-
-    return counts
 
 
 def discard_different_positions(arr, correct_positions):
@@ -164,3 +165,4 @@ def discard_different_positions(arr, correct_positions):
 
 def privacy_amplification():
     return None
+

@@ -18,21 +18,19 @@ if use_simulator == "n":
 
 print("\n")
 
-alice_bits = ['0', '1', '0', '0', '0', '1', '0', '1']
-alice_bases = ['Z', 'Z', 'X', 'Z', 'Z', 'X', 'X', "X"]
+alice_bits = get_random_sequence_of_bits(size)
+alice_bases = get_random_sequence_of_bases(size)
 alice_states = get_states(alice_bits, alice_bases)
 
-bob_bases = ['Z', 'Z', 'X', 'X', 'X', 'Z', 'X', 'X']
+bob_bases = get_random_sequence_of_bases(size)
 
 circuit = QuantumCircuit(size, size)
 
 insert_states_in_circuit(circuit, alice_states)
 
-make_measurements(bob_bases, circuit)
+insert_measurements_according_to_base(bob_bases, circuit)
 
-counts = get_counts(circuit, backend, shots)
-
-bob_measurements = get_measurements(counts, shots, accuracy, size)
+bob_measurements = get_measurements_result(backend, circuit, shots, accuracy, size)
 
 same_bases_positions = get_same_bases_positions(alice_bases, bob_bases)
 
