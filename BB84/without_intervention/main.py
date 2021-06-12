@@ -34,16 +34,28 @@ bob_measurements = get_measurements_result(backend, circuit, shots, accuracy, si
 
 same_bases_positions = get_same_bases_positions(alice_bases, bob_bases)
 
-alice_key = discard_different_positions(alice_bits, same_bases_positions)
-bob_key = discard_different_positions(bob_measurements, same_bases_positions)
+alice_raw_key = discard_different_positions(alice_bits, same_bases_positions)
+bob_raw_key = discard_different_positions(bob_measurements, same_bases_positions)
 
+save_circuit_image(circuit, "bb84_circuit")
 print(f"\nAlice bits: {alice_bits}")
 print(f"Alice bases: {alice_bases}")
 print(f"Alice states: {alice_states}\n")
 print(f"Bob bases: {bob_bases}")
 print(f"Bob measurements: {bob_measurements}\n")
 print(f"Same bases positions: {same_bases_positions}\n")
-print(f"Alice key: {alice_key}")
-print(f"Bob key: {bob_key}\n")
+print(f"Alice raw key: {alice_raw_key}")
+print(f"Bob raw key: {bob_raw_key}\n")
 
-save_circuit_image(circuit, "bb84_circuit")
+
+
+privacy_amplification = input("Perform privacy amplification?(y/n): ").lower()
+if privacy_amplification == "y":
+    bits_to_discard = int(input(f"Enter desired number of bits to compare (max:{len(alice_raw_key)}): "))
+    accuracy = int(input("Enter desired accuracy: "))
+    print("The compared bits will be discarded\n")
+
+    perform_privacy_amplification(alice_raw_key, bob_raw_key, bits_to_discard, accuracy)
+
+
+        

@@ -2,7 +2,7 @@ from qiskit import QuantumCircuit, transpile
 from qiskit.providers.aer import QasmSimulator
 from qiskit.tools.monitor import job_monitor
 from qiskit.tools.visualization import circuit_drawer
-from random import randint
+from random import randint, sample
 from constants import *
 
 
@@ -121,7 +121,7 @@ def get_measurements_result(backend, circuit, shots, accuracy, size):
             else:
                 random_number = str(randint(0, 1))
                 measurements.append(random_number)
-        elif zeros > ones:
+        elif zeros >= ones:
             if zeros * 100 / shots >= accuracy:
                 measurements.append(BIT_0)
             else:
@@ -147,7 +147,6 @@ def get_same_bases_positions(first_bases, second_bases):
 
 
 def save_circuit_image(circuit, file_name):
-    print("Saving circuit image")
     diagram = circuit_drawer(
         circuit, output="mpl", style={"backgroundcolor": "#EEEEEE"}
     )
@@ -162,7 +161,30 @@ def discard_different_positions(arr, correct_positions):
 
     return corrected_array
 
+# check_for_eavesdropper
+def perform_privacy_amplification(alice_raw_key, bob_raw_key, bits_to_discard, accuracy):
+    sequence_length = len(alice_raw_key)
+    random_indexes = sample(range(sequence_length), bits_to_discard)
+    matching_values = 0
 
-def privacy_amplification():
-    return None
+    random_indexes.sort()
+    print(f"Positions of bits checked: {random_indexes}")
 
+    for i in random_indexes:
+        if alice_raw_key[i] == bob_raw_key[i]:
+            matching_values += 1
+    
+    if matching_values * 100 / bits_to_discard >= accuracy:
+        print("Result: No eavesdropper detected\n")
+
+        alice_sifted_key = []
+        bob_sifted_key = []
+        for i in range(sequence_length):
+            if not i in random_indexes:
+                alice_sifted_key.append(alice_raw_key[i])
+                bob_sifted_key.append(bob_raw_key[i])
+
+        print(f"Alice's sifted key: {alice_sifted_key}\n")
+        print(f"Bob's sifted key: {bob_sifted_key}\n")
+    else:
+        print("Result: Eavesdropper detected. Abort protocol.")
