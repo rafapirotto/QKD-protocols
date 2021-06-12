@@ -4,6 +4,7 @@ from qiskit.tools.monitor import job_monitor
 from qiskit.tools.visualization import circuit_drawer
 from random import randint, sample
 from constants import *
+import onetimepad
 
 
 def get_random_sequence_of_bits(size):
@@ -189,3 +190,14 @@ def perform_privacy_amplification(alice_raw_key, bob_raw_key, bits_to_discard, a
         print(f"Bob's sifted key: {bob_sifted_key}\n")
     else:
         print("Result: Eavesdropper detected. Abort protocol.")
+
+def encrypt_message(message):
+    encryption_key = input("Enter encryption key: ")
+    encrypted_message = onetimepad.encrypt(message, encryption_key)
+    return encrypted_message
+    
+
+def descrypt_message(encrypted_message):
+    decryption_key = input("Enter decryption key: ")
+    decrypted_message = onetimepad.decrypt(encrypted_message, decryption_key)
+    return decrypted_message
