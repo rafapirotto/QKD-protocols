@@ -1,0 +1,8 @@
+BIT_0 = "0"
+BIT_1 = "1"
+Z_BASE = "Z"
+X_BASE = "X"
+STATE_0 = "|0>"
+STATE_1 = "|1>"
+STATE_PLUS = "|+>"
+STATE_MINUS = "|->"
