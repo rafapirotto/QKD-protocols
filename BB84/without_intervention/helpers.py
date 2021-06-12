@@ -161,6 +161,7 @@ def discard_different_positions(arr, correct_positions):
 
     return corrected_array
 
+
 # check_for_eavesdropper
 def perform_privacy_amplification(alice_raw_key, bob_raw_key, bits_to_discard, accuracy):
     sequence_length = len(alice_raw_key)
@@ -173,16 +174,16 @@ def perform_privacy_amplification(alice_raw_key, bob_raw_key, bits_to_discard, a
     for i in random_indexes:
         if alice_raw_key[i] == bob_raw_key[i]:
             matching_values += 1
-    
+
     if matching_values * 100 / bits_to_discard >= accuracy:
         print("Result: No eavesdropper detected\n")
 
-        alice_sifted_key = []
-        bob_sifted_key = []
+        alice_sifted_key = ''
+        bob_sifted_key = ''
         for i in range(sequence_length):
             if not i in random_indexes:
-                alice_sifted_key.append(alice_raw_key[i])
-                bob_sifted_key.append(bob_raw_key[i])
+                alice_sifted_key += alice_raw_key[i]
+                bob_sifted_key += bob_raw_key[i]
 
         print(f"Alice's sifted key: {alice_sifted_key}\n")
         print(f"Bob's sifted key: {bob_sifted_key}\n")
