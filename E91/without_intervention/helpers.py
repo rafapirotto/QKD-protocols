@@ -8,7 +8,6 @@ from onetimepad import decrypt, encrypt
 import sys
 import math
 
-
 def get_random_sequence_of_bits(size):
     simulator = QasmSimulator()
     circuit = QuantumCircuit(size, size)
@@ -25,6 +24,7 @@ def get_random_sequence_of_bits(size):
     str_sequence = next(iter(counts))
 
     return list(str_sequence)
+
 
 def get_random_sequence_of_bases(size):
     bit_sequence = get_random_sequence_of_bits(size)
