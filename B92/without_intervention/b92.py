@@ -39,7 +39,8 @@ def b92(alice_bits=None, bob_bits=None, vector=None):
 
 
   save_circuit_image(circuit, "b92_circuit")
-  print(f"\nAlice bits: {alice_bits}")
+  print("\nB92 protocol without intervention\n")
+  print(f"Alice bits: {alice_bits}")
   print(f"Alice states: {alice_states}\n")
   print(f"\nBob bits: {bob_bits}")
   print(f"Bob bases: {bob_bases}\n")

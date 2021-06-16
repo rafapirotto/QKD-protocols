@@ -39,7 +39,8 @@ def bb84(alice_bits=None, alice_bases=None, bob_bases=None):
     bob_raw_key = discard_different_positions(bob_measurements, same_bases_positions)
 
     save_circuit_image(circuit, "bb84_circuit")
-    print(f"\nAlice bits: {alice_bits}")
+    print("\nBB84 protocol without intervention\n")
+    print(f"Alice bits: {alice_bits}")
     print(f"Alice bases: {alice_bases}")
     print(f"Alice states: {alice_states}\n")
     print(f"Bob bases: {bob_bases}")
