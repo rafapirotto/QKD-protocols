@@ -60,7 +60,7 @@ def insert_measurements_according_to_base(alice_bases, bob_bases, circuit):
             bob_base = bob_bases[math.ceil(int(i/2))]
             if bob_base == Z_BASE:
                 measure_in_z(circuit, i)
-            elif alice_base == X_BASE:
+            elif bob_base == X_BASE:
                 measure_in_x(circuit, i)
 
 
