@@ -40,22 +40,18 @@ def bb84(alice_bits=None, alice_bases=None, bob_bases=None):
 
     save_circuit_image(circuit, "bb84_circuit")
     print("\nBB84 protocol without intervention\n")
-    print(f"Alice bits: {alice_bits}")
-    print(f"Alice bases: {alice_bases}")
-    print(f"Alice states: {alice_states}\n")
-    print(f"Bob bases: {bob_bases}")
+    print(f"Alice bits:       {alice_bits}")
+    print(f"Alice bases:      {alice_bases}")
+    print(f"Alice states:     {alice_states}\n")
+    print(f"Bob bases:        {bob_bases}")
     print(f"Bob measurements: {bob_measurements}\n")
     print(f"Same bases positions: {same_bases_positions}\n")
     print(f"Alice raw key: {alice_raw_key}")
-    print(f"Bob raw key: {bob_raw_key}\n")
+    print(f"Bob raw key:   {bob_raw_key}\n")
 
     privacy_amplification = input("Perform privacy amplification?(y/n): ").lower()
     if privacy_amplification == "y":
-        bits_to_discard = int(input(f"Enter desired number of bits to compare (max:{len(alice_raw_key)}): "))
-        accuracy = int(input("Enter desired accuracy: "))
-        print("The compared bits will be discarded\n")
-
-        perform_privacy_amplification(alice_raw_key, bob_raw_key, bits_to_discard, accuracy)
+        perform_privacy_amplification(alice_raw_key, bob_raw_key)
 
     encrypt = input("Encrypt message?(y/n): ").lower()
     if encrypt == "y":
