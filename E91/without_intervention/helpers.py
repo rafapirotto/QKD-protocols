@@ -9,11 +9,11 @@ import sys
 import math
 
 
-def get_random_sequence_of_bits(size):
+def get_random_sequence_of_bits(number_of_pairs):
     simulator = QasmSimulator()
-    circuit = QuantumCircuit(size, size)
+    circuit = QuantumCircuit(number_of_pairs, number_of_pairs)
 
-    for i in range(size):
+    for i in range(number_of_pairs):
         circuit.h([i])
         circuit.measure([i], [i])
 
@@ -27,19 +27,22 @@ def get_random_sequence_of_bits(size):
     return list(str_sequence)
 
 
-def get_random_sequence_of_bases(size):
-    bit_sequence = get_random_sequence_of_bits(size)
+def get_random_sequence_of_bases(number_of_pairs):
+    bit_sequence = get_random_sequence_of_bits(number_of_pairs)
     bases = [Z_BASE if bit == BIT_0 else X_BASE for bit in bit_sequence]
 
     return bases
 
 
-def insert_states_in_circuit(circuit, size):
-    for i in range(size):
-        circuit.h(2*i)
-        circuit.cx(2*i, 2*i + 1)
-            
+def insert_states_in_circuit(circuit, number_of_qubits):
+    for i in range(number_of_qubits - 1):
+        if i % 2 == 0:
+            circuit.h(i)
+            circuit.cx(i, i + 1)
 
+    circuit.barrier()
+
+            
 def measure_in_z(circuit, i):
      circuit.measure([i], [i])
         
@@ -48,16 +51,21 @@ def measure_in_x(circuit, i):
     measure_in_z(circuit, i)
 
 
-def insert_measurements_according_to_base(alice_bases, bob_bases, circuit):
-    for i in range(2*len(alice_bases)):
+def insert_measurements_according_to_base(alice_bases, bob_bases, circuit, number_of_qubits):
+    # alice measurements
+    for i in range(number_of_qubits):
         if i % 2 == 0:
             alice_base = alice_bases[int(i/2)]
             if alice_base == Z_BASE:
                 measure_in_z(circuit, i)
             elif alice_base == X_BASE:
                 measure_in_x(circuit, i)
-        elif i % 2 != 0:
-            bob_base = bob_bases[math.ceil(int(i/2))]
+    circuit.barrier()
+
+    # bob measurements
+    for i in range(number_of_qubits):
+        if i % 2 != 0:
+            bob_base = bob_bases[int(i/2)]
             if bob_base == Z_BASE:
                 measure_in_z(circuit, i)
             elif bob_base == X_BASE:
@@ -79,12 +87,12 @@ def get_counts(circuit, backend, shots):
     return counts
 
 
-def get_measurements_result(backend, circuit, shots, accuracy, size):
+def get_measurements_result(backend, circuit, shots, accuracy, number_of_pairs):
     measurements = []
     counts = get_counts(circuit, backend, shots)
     value_list = counts.items()
 
-    for i in range(size):
+    for i in range(number_of_pairs):
         zeros = 0
         ones = 0
 

@@ -8,9 +8,10 @@ def e91(alice_bases=None, bob_bases=None):
   accuracy = 100
 
   if alice_bases is None:
-    size = int(input("Enter desired length of bits: "))
-    alice_bases = get_random_sequence_of_bases(size)
-    bob_bases = get_random_sequence_of_bases(size)
+    number_of_pairs = int(input("Enter desired number of entangled pairs: "))
+    print("\n")
+    alice_bases = get_random_sequence_of_bases(number_of_pairs)
+    bob_bases = get_random_sequence_of_bases(number_of_pairs)
     
   if use_simulator == "n":
     print("Loading IBM account")
@@ -21,16 +22,17 @@ def e91(alice_bases=None, bob_bases=None):
 
   print("\n")
 
-  size = len(alice_bases)
-  circuit = QuantumCircuit(2*size, 2*size)
+  number_of_pairs = len(alice_bases)
+  number_of_qubits = number_of_pairs * 2
+  circuit = QuantumCircuit(number_of_qubits, number_of_qubits)
 
-  insert_states_in_circuit(circuit, size)
+  insert_states_in_circuit(circuit, number_of_qubits)
 
-  insert_measurements_according_to_base(alice_bases, bob_bases, circuit)
+  insert_measurements_according_to_base(alice_bases, bob_bases, circuit, number_of_qubits)
 
   save_circuit_image(circuit, "e91_circuit")
 
-  measurements = get_measurements_result(backend, circuit, shots, accuracy, 2*size)
+  measurements = get_measurements_result(backend, circuit, shots, accuracy, number_of_qubits)
   same_bases_positions = get_same_bases_positions(alice_bases, bob_bases)
 
   alice_measurements = measurements['alice']
@@ -44,8 +46,8 @@ def e91(alice_bases=None, bob_bases=None):
   print("alice bases:", alice_bases)
   print("bob bases:  ", bob_bases)
   print('\n')
-  print("alice measurements: ", measurements["alice"])
-  print("bob measurements:   ", measurements["bob"])
+  print("alice measurements: ", alice_measurements)
+  print("bob measurements:   ", bob_measurements)
   print("same_bases_positions: ", same_bases_positions)
   print('\n')
   print("alice_raw_key", alice_raw_key)
