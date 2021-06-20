@@ -40,13 +40,14 @@ def b92(alice_bits=None, bob_bits=None, vector=None):
 
   save_circuit_image(circuit, "b92_circuit")
   print("\nB92 protocol without intervention\n")
-  print(f"Alice bits: {alice_bits}")
-  print(f"Alice states: {alice_states}\n")
-  print(f"\nBob bits: {bob_bits}")
-  print(f"Bob bases: {bob_bases}\n")
-  print(f"Vector: {vector}\n")
+  print(f"Alice bits:   {alice_bits}")
+  print(f"Alice states: {alice_states}")
+  print("\n")
+  print(f"Bob bits:     {bob_bits}")
+  print(f"Bob bases:    {bob_bases}\n")
+  print(f"Vector:       {vector}\n")
   print(f"Vector Alice: {new_vector_alice}\n")
-  print(f"Vector Bob: {new_vector_bob}\n")
+  print(f"Vector Bob:   {new_vector_bob}\n")
   print(f"The key is either Bob's vector or Alice's.\n")
 
   vector_choice = input("Use Alice's vector or Bob's as key?(a/b): ").lower()
@@ -66,16 +67,13 @@ def b92(alice_bits=None, bob_bits=None, vector=None):
 
   alice_raw_key = "".join(new_vector_alice)
   bob_raw_key = "".join(new_vector_bob)
-  print(f"\nAlice raw key: {alice_raw_key}\n")
-  print(f"Bob raw key: {bob_raw_key}\n")
+  print("\n")
+  print(f"Alice raw key: {alice_raw_key}\n")
+  print(f"Bob raw key:   {bob_raw_key}\n")
 
   privacy_amplification = input("Perform privacy amplification?(y/n): ").lower()
   if privacy_amplification == "y":
-      bits_to_discard = int(input(f"Enter desired number of bits to compare (max:{len(new_vector_alice)}): "))
-      accuracy = int(input("Enter desired accuracy: "))
-      print("The compared bits will be discarded\n")
-
-      perform_privacy_amplification(new_vector_alice, new_vector_bob, bits_to_discard, accuracy)
+      perform_privacy_amplification(new_vector_alice, new_vector_bob)
 
   encrypt = input("Encrypt message?(y/n): ").lower()
   if encrypt == "y":

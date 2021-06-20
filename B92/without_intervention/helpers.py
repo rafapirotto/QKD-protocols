@@ -126,7 +126,11 @@ def get_sub_vector(bits, vector):
     return new_vector
 
 # check_for_eavesdropper
-def perform_privacy_amplification(alice_raw_key, bob_raw_key, bits_to_discard, accuracy):
+def perform_privacy_amplification(alice_raw_key, bob_raw_key):
+    max_bits_to_discard = len(alice_raw_key)
+    bits_to_discard = int(input(f"Enter desired number of bits to compare (max:{max_bits_to_discard}): "))
+    accuracy = int(input("Enter desired accuracy: "))
+    print("The compared bits will be discarded\n")
     sequence_length = len(alice_raw_key)
     random_indexes = sample(range(sequence_length), bits_to_discard)
     matching_values = 0
