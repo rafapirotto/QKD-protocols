@@ -8,6 +8,7 @@ from onetimepad import decrypt, encrypt
 import sys
 import math
 
+
 def get_random_sequence_of_bits(size):
     simulator = QasmSimulator()
     circuit = QuantumCircuit(size, size)
@@ -46,6 +47,7 @@ def measure_in_x(circuit, i):
     circuit.h([i])
     measure_in_z(circuit, i)
 
+
 def insert_measurements_according_to_base(alice_bases, bob_bases, circuit):
     for i in range(2*len(alice_bases)):
         if i % 2 == 0:
@@ -54,9 +56,7 @@ def insert_measurements_according_to_base(alice_bases, bob_bases, circuit):
                 measure_in_z(circuit, i)
             elif alice_base == X_BASE:
                 measure_in_x(circuit, i)
-
-    for i in range(2*len(bob_bases)):
-        if i % 2 != 0:
+        elif i % 2 != 0:
             bob_base = bob_bases[math.ceil(int(i/2))]
             if bob_base == Z_BASE:
                 measure_in_z(circuit, i)
@@ -68,6 +68,7 @@ def save_circuit_image(circuit, file_name):
     diagram = circuit_drawer(circuit, output='mpl', style={'backgroundcolor': '#EEEEEE'})
     diagram.savefig(f"{file_name}.png", format="png")
     
+
 def get_counts(circuit, backend, shots):
     compiled_circuit = transpile(circuit, backend)
     job = backend.run(compiled_circuit, shots=shots)
@@ -110,19 +111,17 @@ def get_measurements_result(backend, circuit, shots, accuracy, size):
 
     bob_measurements = []
     alice_measurements = []
+
     for i in range(len(measurements)):
         measurement = measurements[i]
         if i % 2 == 0:
             alice_measurements.append(measurement)
-
-    for i in range(len(measurements)):
-        measurement = measurements[i]
-        if i % 2 != 0:
+        elif i % 2 != 0:
             bob_measurements.append(measurement)
             
-    measurements_as_dic = {"bob":bob_measurements, "alice":alice_measurements}
+    measurements_dic = {"bob":bob_measurements, "alice":alice_measurements}
 
-    return measurements_as_dic
+    return measurements_dic
     
 
 def get_same_bases_positions(first_bases, second_bases):
@@ -138,6 +137,7 @@ def get_same_bases_positions(first_bases, second_bases):
 
     return positions
 
+
 def discard_different_positions(arr, correct_positions):
     corrected_array = []
 
@@ -148,7 +148,12 @@ def discard_different_positions(arr, correct_positions):
 
 
 # check_for_eavesdropper
-def perform_privacy_amplification(alice_raw_key, bob_raw_key, bits_to_discard, accuracy):
+def perform_privacy_amplification(alice_raw_key, bob_raw_key):
+    max_bits_to_discard = len(alice_raw_key)
+    bits_to_discard = int(input(f"Enter desired number of bits to compare (max:{max_bits_to_discard}): "))
+    accuracy = int(input("Enter desired accuracy: "))
+    print("The compared bits will be discarded\n")
+
     sequence_length = len(alice_raw_key)
     random_indexes = sample(range(sequence_length), bits_to_discard)
     matching_values = 0

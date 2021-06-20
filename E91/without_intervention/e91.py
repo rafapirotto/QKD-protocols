@@ -38,6 +38,7 @@ def e91(alice_bases=None, bob_bases=None):
 
   alice_raw_key = discard_different_positions(alice_measurements, same_bases_positions)
   bob_raw_key = discard_different_positions(bob_measurements, same_bases_positions)
+  
   print('\n')
   print("E91 protocol without intervention\n")
   print("alice bases:", alice_bases)
@@ -52,11 +53,7 @@ def e91(alice_bases=None, bob_bases=None):
 
   privacy_amplification = input("Perform privacy amplification?(y/n): ").lower()
   if privacy_amplification == "y":
-      bits_to_discard = int(input(f"Enter desired number of bits to compare (max:{len(alice_raw_key)}): "))
-      accuracy = int(input("Enter desired accuracy: "))
-      print("The compared bits will be discarded\n")
-
-      perform_privacy_amplification(alice_raw_key, bob_raw_key, bits_to_discard, accuracy)
+      perform_privacy_amplification(alice_raw_key, bob_raw_key)
 
   encrypt = input("Encrypt message?(y/n): ").lower()
   if encrypt == "y":
