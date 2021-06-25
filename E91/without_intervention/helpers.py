@@ -6,7 +6,6 @@ from random import randint, sample
 from constants import *
 from onetimepad import decrypt, encrypt
 import sys
-import math
 
 
 def get_random_sequence_of_bits(number_of_pairs):
@@ -33,13 +32,14 @@ def get_random_sequence_of_bases(number_of_pairs):
 
     return bases
 
+def generate_bell_state(circuit, pos):
+    circuit.h(pos)
+    circuit.cx(pos, pos + 1)
 
 def insert_states_in_circuit(circuit, number_of_qubits):
     for i in range(number_of_qubits - 1):
         if i % 2 == 0:
-            circuit.h(i)
-            circuit.cx(i, i + 1)
-
+            generate_bell_state(circuit, i)
     circuit.barrier()
 
             

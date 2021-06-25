@@ -9,7 +9,6 @@ def e91(alice_bases=None, bob_bases=None):
 
   if alice_bases is None:
     number_of_pairs = int(input("Enter desired number of entangled pairs: "))
-    print("\n")
     alice_bases = get_random_sequence_of_bases(number_of_pairs)
     bob_bases = get_random_sequence_of_bases(number_of_pairs)
     
