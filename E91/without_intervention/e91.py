@@ -24,6 +24,7 @@ def e91(alice_bases=None, bob_bases=None):
   number_of_pairs = len(alice_bases)
   number_of_qubits = number_of_pairs * 2
   circuit = QuantumCircuit(number_of_qubits, number_of_qubits)
+  initialize_circuit_with_zeros(circuit)
 
   insert_states_in_circuit(circuit, number_of_qubits)
 

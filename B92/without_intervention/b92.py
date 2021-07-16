@@ -25,6 +25,7 @@ def b92(alice_bits=None, bob_bits=None, vector=None):
   bob_bases = get_bases_from_bits(bob_bits)
   size = len(alice_bits)
   circuit = QuantumCircuit(size, size)
+  initialize_circuit_with_zeros(circuit)
 
   insert_states_in_circuit(circuit, alice_states)
 

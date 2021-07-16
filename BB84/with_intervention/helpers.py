@@ -211,3 +211,7 @@ def descrypt_message(encrypted_message):
 def reset_circuit(circuit, size):
     for i in range(size):
         circuit.reset([i])
+        
+def initialize_circuit_with_zeros(circuit):
+    for i in range(circuit.num_qubits):
+        circuit.reset(i)

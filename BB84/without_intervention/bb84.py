@@ -26,6 +26,7 @@ def bb84(alice_bits=None, alice_bases=None, bob_bases=None):
     alice_states = get_states(alice_bits, alice_bases)
     size = len(alice_bits)
     circuit = QuantumCircuit(size, size)
+    initialize_circuit_with_zeros(circuit)
 
     insert_states_in_circuit(circuit, alice_states)
 
