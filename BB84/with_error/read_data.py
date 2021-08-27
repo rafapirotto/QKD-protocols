@@ -33,6 +33,12 @@ eve = eve.split(", ]")[0] + "]\n"
 bob = bob.split(", ]")[0] + "]\n"
 
 
+# remove the double commas generated from not having any base in common
+alice = alice.replace(",,", ",")
+eve = eve.replace(",,", ",")
+bob = bob.replace(",,", ",")
+
+
 file_2 = open("simulator_with_eve_processed.txt", "a")
 file_2.write(alice)
 file_2.write(eve)
