@@ -126,12 +126,12 @@ def get_sub_vector(bits, vector):
     return new_vector
 
 # check_for_eavesdropper
-def perform_privacy_amplification(alice_raw_key, bob_raw_key):
-    max_bits_to_discard = len(alice_raw_key)
+def perform_privacy_amplification(alice_sifted_key, bob_sifted_key):
+    max_bits_to_discard = len(alice_sifted_key)
     bits_to_discard = int(input(f"Enter desired number of bits to compare (max:{max_bits_to_discard}): "))
     accuracy = int(input("Enter desired accuracy: "))
     print("The compared bits will be discarded\n")
-    sequence_length = len(alice_raw_key)
+    sequence_length = len(alice_sifted_key)
     random_indexes = sample(range(sequence_length), bits_to_discard)
     matching_values = 0
 
@@ -139,7 +139,7 @@ def perform_privacy_amplification(alice_raw_key, bob_raw_key):
     print(f"Positions of bits checked: {random_indexes}")
 
     for i in random_indexes:
-        if alice_raw_key[i] == bob_raw_key[i]:
+        if alice_sifted_key[i] == bob_sifted_key[i]:
             matching_values += 1
 
     if matching_values * 100 / bits_to_discard >= accuracy:
@@ -149,8 +149,8 @@ def perform_privacy_amplification(alice_raw_key, bob_raw_key):
         bob_sifted_key = ''
         for i in range(sequence_length):
             if not i in random_indexes:
-                alice_sifted_key += alice_raw_key[i]
-                bob_sifted_key += bob_raw_key[i]
+                alice_sifted_key += alice_sifted_key[i]
+                bob_sifted_key += bob_sifted_key[i]
 
         print(f"Alice's sifted key: {alice_sifted_key}\n")
         print(f"Bob's sifted key: {bob_sifted_key}\n")
