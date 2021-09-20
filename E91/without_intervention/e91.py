@@ -7,7 +7,7 @@ def e91():
   backend = QasmSimulator()
   accuracy = 100
 
-  number_of_pairs = int(input("Enter desired number of entangled pairs: "))
+  number_of_pairs = int(input("Enter desired number of entangled pairs (max:14): "))
   alice_bases = get_random_sequence_of_bases(number_of_pairs)
   bob_bases = get_random_sequence_of_bases(number_of_pairs)
     

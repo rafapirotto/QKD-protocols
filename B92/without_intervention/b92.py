@@ -7,7 +7,7 @@ def b92():
   backend = QasmSimulator()
   accuracy = 100
 
-  size = int(input("Enter desired length of bits: "))
+  size = int(input("Enter desired length of bits (max:29): "))
   alice_bits = get_random_sequence_of_bits(size)
   bob_bits = get_random_sequence_of_bits(size)
     

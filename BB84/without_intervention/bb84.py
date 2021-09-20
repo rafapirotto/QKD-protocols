@@ -8,7 +8,7 @@ def bb84():
     backend = QasmSimulator()
     accuracy = 100
 
-    size = int(input("Enter desired length of bits: "))
+    size = int(input("Enter desired length of bits (max:29): "))
     alice_bits = get_random_sequence_of_bits(size)
     alice_bases = get_random_sequence_of_bases(size)
     bob_bases = get_random_sequence_of_bases(size)
