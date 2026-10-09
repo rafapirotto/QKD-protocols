@@ -6,3 +6,8 @@ Running a protocol is done executing the "main.py" file contained inside each pr
 ## Pre-requisites
 * [python](https://www.python.org/downloads/)
 * [qiskit](https://qiskit.org/documentation/getting_started.html)
+
+## License
+This project is licensed under the [MIT License](LICENSE). Copyright (c) 2021 Rafael Pirotto.
+
+Third-party dependencies (qiskit, onetimepad) are not included in this repository and keep their own licenses.
